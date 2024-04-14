@@ -40,6 +40,15 @@ const itemData = [
     title: "Camera",
   },
   {
+    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+    title: "Camera",
+  },
+
+  {
+    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+    title: "Camera",
+  },
+  {
     img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
     title: "Coffee",
   },
@@ -56,8 +65,12 @@ const itemData = [
     title: "Basketball",
   },
   {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
+    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
+    title: "Basketball",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
+    title: "Basketball",
   },
 ];
 
@@ -115,7 +128,7 @@ export default function BodyHome() {
               >
                 <Grid container spacing={2}>
                   {displayItem.map((item, index) => (
-                    <Grid item xs={3} md={3} sm={6} key={index}>
+                    <Grid item xs={6} sm={6} md={3} key={index}>
                       <Card
                         sx={{
                           borderRadius: "10px",
@@ -203,7 +216,7 @@ export default function BodyHome() {
                   <Grid item xs={10} sx={{ marginTop: "50px" }}>
                     <Grid container spacing={2}>
                       {displayItem.map((item, index) => (
-                        <Grid item xs={3} md={3} sm={6} key={index}>
+                        <Grid item xs={6} sm={6} md={3} key={index}>
                           <CardMedia
                             component="img"
                             alt="green iguana"
