@@ -1,0 +1,72 @@
+.banner {
+    display: block;
+    background: rgba(117, 216, 251, 1);
+    background-image: url(../../../public/img/background.png);
+    /* background-size: cover; */
+    background-repeat: no-repeat;
+    background-position: right top;
+    border-style: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    border-radius: 0px;
+    width: 100%;
+    height: 860px;
+}
+
+.logo {
+    display: block;
+    background: rgba(255, 255, 255, 0);
+    left: 40px;
+    top:20px;
+    z-index: 27;
+    position: absolute;
+    height: 55px;
+    width: 171px;
+}
+
+.logo .img-logo {
+    
+    border-style: none;
+    border-radius: 0px;
+    width: 101px;
+    height: 50px;
+}
+
+
+/* banner */
+.banner-content {
+    position: absolute;
+    top: 150px;
+}
+
+.form-registered {
+  background-color: #ffffff; 
+  border-radius: 10px; /* Đặt border radius */
+  padding: 20px; /* Thêm padding để tạo khoảng cách giữa các thành phần bên trong */
+}
+
+.rainbow-text {
+  background: linear-gradient(to right, rgb(217, 190, 190), rgb(46, 56, 94), rgb(32, 64, 80), green, blue, indigo, violet);
+  font-family: 'KumlienPro-Bold', 'KumlienPro-Bold IE', Georgia, serif;
+  color: transparent; 
+  -webkit-background-clip: text; 
+  background-clip: text;
+}
+
+
+/* Mất ảnh */
+@media (max-width: 720px) {
+  .banner-content-text{
+    margin-top: 30px;
+    text-align: center;
+  }
+    .title-img {
+      display: none;
+    }
+    .banner-content-text {
+      margin-top: 20px;
+    }
+  }
+  
+

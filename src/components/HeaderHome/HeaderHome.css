@@ -1,0 +1,19 @@
+
+.logo {
+    display: block;
+    background: rgba(255, 255, 255, 0);
+    left: 40px;
+    top:20px;
+    z-index: 27;
+    position: absolute;
+    height: 55px;
+    width: 171px;
+}
+
+.logo .img-logo {
+    
+    border-style: none;
+    border-radius: 0px;
+    width: 101px;
+    height: 50px;
+}

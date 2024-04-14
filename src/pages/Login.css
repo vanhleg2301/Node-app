@@ -1,0 +1,40 @@
+.form-register {
+    width: 100%;
+    height: 600px;
+    background-color: #ffffff; 
+    border-radius: 10px; /* Đặt border radius */
+    margin-top: 40px;
+    padding: 20px; /* Thêm padding để tạo khoảng cách giữa các thành phần bên trong */
+    box-shadow: 4px 4px 4px 8px rgba(0, 0, 0, 0.3); /* Add box shadow */
+}
+
+.form-login .btn-success {
+    width: 100%; /* Đặt chiều dài của nút là 100% */
+    border-radius: 5px; /* Đặt border radius cho nút */
+}
+
+
+.form-continue {
+
+}
+
+.form-continue-item {
+    width: 100%;
+    margin-top: 20px;
+    border: solid 1px;
+    color: "#002333";
+    font-weight: bold; /* Im đậm */
+}
+
+.form-text-item {
+    margin-top: 20px;
+}
+
+
+.agreement-text {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #666; /* Adjust color as needed */
+  }
+  

@@ -1,0 +1,27 @@
+.form-login {
+    background-color: #ffffff; 
+    border-radius: 10px; /* Đặt border radius */
+    padding: 20px; /* Thêm padding để tạo khoảng cách giữa các thành phần bên trong */
+}
+
+.form-login .btn-success {
+    width: 100%; /* Đặt chiều dài của nút là 100% */
+    border-radius: 5px; /* Đặt border radius cho nút */
+}
+
+
+.form-continue {
+
+}
+
+.form-continue-item {
+    width: 100%;
+    margin-top: 20px;
+    border: solid 1px;
+    color: "#002333";
+    font-weight: bold; /* Im đậm */
+}
+
+.form-text-item {
+    margin-top: 20px;
+}
