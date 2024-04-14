@@ -61,7 +61,7 @@ export default function HeaderHome() {
           sx={{ display: "flex", justifyContent: "center" }}
         >
           <Box sx={{ textAlign: "center", fontSize: "60px" }}>
-            <h1>Start your free month</h1>
+            <h1 className="header-text">Start your free month</h1>
           </Box>
         </Grid>
         <Grid

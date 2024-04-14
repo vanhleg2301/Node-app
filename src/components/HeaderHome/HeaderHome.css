@@ -17,3 +17,10 @@
     width: 101px;
     height: 50px;
 }
+
+@media (max-width: 720px) {
+    .header-text{
+        display: none;
+    }
+}
+
