@@ -14,6 +14,7 @@ export default function Note() {
         sx={{
           height: "50vh",
           boxShadow: "0 0 15px 0 rgb(193 193 193 / 60%)",
+          marginTop: 20, // Đơn vị là vh
         }}
       >
         <Grid item xs={3} sx={{ height: "100%" }}>

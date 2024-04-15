@@ -1,6 +1,7 @@
 .wrap-body {
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: 100px;
     width: 100%;
     height:auto;
     background-color: rgba(0,35,51,1);

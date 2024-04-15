@@ -9,12 +9,19 @@ import ProtectedRoute from "./ProtectedRoute";
 import ErrorPage from "../pages/ErrorPage";
 import Note from "../pages/Note";
 import PublicRoute from "./PublicRoute";
+import Payment from "../pages/Payment";
+import Momo from "../components/PaymentMethods/Momo";
+import VnPay from "../components/PaymentMethods/VnPay";
+import PayPal from "../components/PaymentMethods/PayPal";
+import { LanguageProvider } from "../context/LanguageProvider";
 
 const AuthLayout = () => {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    </LanguageProvider>
   );
 };
 
@@ -29,6 +36,10 @@ export default createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { element: <Home />, path: "/" },
+          { element: <Payment />, path: "/payment" },
+          { element: <Momo />, path: "/payment/momo" },
+          { element: <VnPay />, path: "/payment/vnpay" },
+          { element: <PayPal />, path: "/payment/paypal" },
           { element: <Home />, path: "/profile" },
           { element: <Note />, path: "/note" },
         ],

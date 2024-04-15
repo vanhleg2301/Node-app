@@ -3,6 +3,8 @@ import "./Banner.css";
 import Register from "../register/Register";
 import { useEffect, useState } from "react";
 import LoadingPage from "../LoadingPage/LoadingPage";
+import { Button, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function Banner() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,7 +21,11 @@ export default function Banner() {
         <div className="logo">
           <div className="img-logo">
             <Image
-              src="./img/4b104382-sk-primary-logo-blk-2_102t01n02t01e000004028.png"
+              style={{
+                width: 40,
+                height: 40,
+              }}
+              src="./img/meoden-removebg-preview.png"
               alt="img"
             />
           </div>
@@ -37,6 +43,15 @@ export default function Banner() {
                     >
                       <h1 className="rainbow-text">Welcome to my Website</h1>
                       <LoadingPage />
+                      <Button variant="light">
+                        <Typography
+                          className="rainbow-text"
+                          component={Link}
+                          to="/note"
+                        >
+                          Go to note something
+                        </Typography>
+                      </Button>
                     </div>
                   ) : (
                     <Register />

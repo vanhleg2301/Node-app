@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
@@ -14,17 +15,21 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import LanguageIcon from "@mui/icons-material/Language";
 import "./Header.css";
 import { AuthContext } from "../../context/AuthProvider";
+import { LanguageProvider, useLanguage } from "../../context/LanguageProvider";
+import { Link } from "react-router-dom";
 
-const pages = ["Products", "Pricing", "Blog", "Note"];
+const pages = ["Blog", "Note"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   useEffect(() => {
-    // Kiểm tra xem có accessToken trong localStorage không và cập nhật trạng thái isLoggedIn
     if (localStorage.getItem("accessToken")) {
       setIsLoggedIn(true);
     }
@@ -34,11 +39,16 @@ export default function Header() {
     user: { displayName, photoURL, auth },
   } = useContext(AuthContext);
 
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-
-  const handleLogout = () => {
-    auth.signOut();
+  const handleClick = (setting) => {
+    if (setting === "Logout") {
+      auth.signOut();
+    } else if (setting === "Profile") {
+      alert("Profile");
+    } else if (setting === "Dashboard") {
+      alert("Dashboard");
+    } else {
+      handleCloseUserMenu();
+    }
   };
 
   const handleOpenNavMenu = (event) => {
@@ -55,9 +65,20 @@ export default function Header() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleLanguageChange = () => {
+    const { changeLanguage, language } = useLanguage(); // Move this inside the component function
+    const newLanguage = language === "en" ? "fr" : "en";
+    changeLanguage(newLanguage);
+    alert(`Language changed to ${newLanguage}`);
+  };
+
   return (
-    <>
-      <AppBar position="static" sx={{ backgroundColor: "#002333" }}>
+    <LanguageProvider>
+      <AppBar
+        position="static"
+        sx={{ backgroundColor: "rgba(117, 216, 251, 1)" }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -80,10 +101,13 @@ export default function Header() {
                 component="img"
                 alt="img"
                 title="Home"
-                image="./img/4b104382-sk-primary-logo-blk-2_102t01n02t01e000004028.png"
+                sx={{
+                  width: 40,
+                  height: 40,
+                }}
+                image="./img/meoden-removebg-preview.png"
               />
             </Typography>
-
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -114,7 +138,7 @@ export default function Header() {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <MenuItem key={page}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}
@@ -124,8 +148,8 @@ export default function Header() {
             <Typography
               variant="h5"
               noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
+              component={Link}
+              to="/"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -151,6 +175,13 @@ export default function Header() {
               ))}
             </Box>
 
+            <Box marginRight={"10px"}>
+              <Tooltip title="Change Language">
+                <IconButton onClick={handleLanguageChange} sx={{ p: 0 }}>
+                  <LanguageIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={displayName}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -174,12 +205,7 @@ export default function Header() {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting, index) => (
-                  <MenuItem
-                    key={index}
-                    onClick={
-                      setting === "Logout" ? handleLogout : handleCloseUserMenu
-                    }
-                  >
+                  <MenuItem key={index} onClick={() => handleClick(setting)}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
@@ -188,6 +214,6 @@ export default function Header() {
           </Toolbar>
         </Container>
       </AppBar>
-    </>
+    </LanguageProvider>
   );
 }

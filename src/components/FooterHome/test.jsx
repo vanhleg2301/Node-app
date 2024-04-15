@@ -1,13 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import "./FooterHome.css";
@@ -33,45 +26,46 @@ export default function FooterHome() {
   };
 
   return (
-    <Box className="FooterHome">
-      <Typography
-        sx={{ textAlign: "center", fontSize: "50px", paddingTop: "70px" }}
-      >
-        Frequently Asked Questions
-      </Typography>
-      <Grid container spacing={0}>
-        <Grid item xs={3} md={3} sm={3}></Grid>
-        <Grid item xs={6} md={6} sm={6}>
-          {questions.map((item, index) => (
-            <Accordion
-              sx={{ background: "rgba(117, 216, 251, 1)", fontSize: "20px" }}
-              key={index}
-              expanded={expandedIndex === index}
-              onChange={() => toggleExpand(index)}
-            >
-              <AccordionSummary
-                expandIcon={
-                  expandedIndex === index ? <RemoveIcon /> : <AddIcon />
-                }
-                aria-controls={`panel${index}-content`}
-                id={`panel${index}-header`}
-              >
+    <>
+      <Box className="FooterHome">
+        <Typography
+          sx={{ textAlign: "center", fontSize: "50px", paddingTop: "70px" }}
+        >
+          Frequently Asked Questions
+        </Typography>
+        <Grid container spacing={0}>
+          <Grid item xs={3} md={3} sm={3}></Grid>
+          <Grid item xs={6} md={6} sm={6}>
+            {questions.map((item, index) => (
+              <Box key={index}>
+                <hr style={{ borderTop: "3px solid black", width: "100%" }} />
                 <Typography
                   variant="body1"
                   color="initial"
-                  sx={{ fontSize: "24px" }}
+                  sx={{
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                  onClick={() => toggleExpand(index)}
                 >
-                  {item.question}
+                  <Box sx={{ marginLeft: "30px" }}>{item.question}</Box>
+                  <Box sx={{ marginLeft: "10px", marginRight: "30px" }}>
+                    {expandedIndex === index ? <RemoveIcon /> : <AddIcon />}
+                  </Box>
                 </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography sx={{ fontSize: "18px" }}>{item.answer}</Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
+                {expandedIndex === index && (
+                  <>
+                    <Typography>{item.answer}</Typography>
+                  </>
+                )}
+              </Box>
+            ))}
+          </Grid>
+          <Grid item xs={3} md={3} sm={3}></Grid>
         </Grid>
-        <Grid item xs={3} md={3} sm={3}></Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 }

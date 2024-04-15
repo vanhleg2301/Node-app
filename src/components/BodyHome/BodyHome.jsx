@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import "./BodyHome.css";
+
 import {
   ImageList,
   ImageListItem,
@@ -12,7 +13,12 @@ import {
   CardContent,
   CardActions,
   Typography,
+  Link,
 } from "@mui/material";
+import ButtonHome from "../ButtonHome/ButtonHome";
+import PlayIcon from "../PlayIcon/PlayIcon";
+import { FacebookAuthProvider, getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const buttonItem = [
   "Featured",
@@ -27,12 +33,7 @@ const buttonItem = [
   "Craft",
   "Graphic Design",
 ];
-const displayItem = [
-  "thumbnail 1",
-  "thumbnail 2",
-  "thumbnail 3",
-  "thumbnail 4",
-];
+const displayItem = ["Meo 1", "Meo 2", "Meo 3", "Meo 4"];
 
 const itemData = [
   {
@@ -75,6 +76,34 @@ const itemData = [
 ];
 
 export default function BodyHome() {
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  const handleShareWithFacebook = () => {
+    if (!auth.currentUser) {
+      alert("Please sign in to share with Facebook.");
+      navigate("/login");
+      return;
+    }
+
+    // Nếu người dùng đã đăng nhập, tạo một bài viết chia sẻ trên Facebook
+    const urlToShare = "https://willowy-bonbon-24a9d4.netlify.app/";
+    const facebookProvider = new auth.FacebookAuthProvider();
+
+    auth.currentUser
+      .linkWithPopup(facebookProvider)
+      .then((result) => {
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${urlToShare}`,
+          "Share with Facebook",
+          "width=600,height=400"
+        );
+      })
+      .catch((error) => {
+        console.error("Error sharing with Facebook:", error);
+      });
+  };
+
   return (
     <>
       <Box className="wrap-body">
@@ -139,12 +168,46 @@ export default function BodyHome() {
                           },
                         }}
                       >
-                        <CardMedia
-                          component="img"
-                          alt="green iguana"
-                          height="140"
-                          image="./img/4b104382-sk-primary-logo-blk-2_102t01n02t01e000004028.png"
-                        />
+                        <Link
+                          sx={{
+                            textDecoration: "none",
+                            "&:hover": {
+                              boxShadow: "0px 0px 15px 5px rgba(0,0,0,0.3)",
+                            },
+                          }}
+                          href="/note"
+                        >
+                          <Box
+                            sx={{
+                              position: "relative",
+                              "&:hover > div": {
+                                display: "flex", // Show the inner Box when hovering over the outer Box
+                              },
+                            }}
+                          >
+                            <CardMedia
+                              component="img"
+                              alt="green iguana"
+                              height="140"
+                              image="./img/ccad784fdc596a3ce032e47b8b6738f9-removebg-preview.png"
+                            />
+                            <Box
+                              sx={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                display: "none",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <PlayIcon />
+                            </Box>
+                          </Box>
+                        </Link>
+
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
                             {item}
@@ -165,6 +228,7 @@ export default function BodyHome() {
                               },
                             }}
                             variant="contained"
+                            onClick={handleShareWithFacebook}
                           >
                             Share
                           </Button>
@@ -190,7 +254,7 @@ export default function BodyHome() {
           </Grid>
           <Grid item xs={1}></Grid>
         </Grid>
-        {""}
+
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <Box className="wrap-body-2">
@@ -251,7 +315,7 @@ export default function BodyHome() {
             </Box>
           </Grid>
         </Grid>
-        {""}
+
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <Box className="wrap-body-3">
@@ -308,6 +372,19 @@ export default function BodyHome() {
               </Grid>
               <Grid item xs={3} md={3}></Grid>
             </Grid>
+            <Grid container spacing={0} sx={{ marginTop: "40px" }}>
+              <Grid item xs={12} sm={12} md={4}></Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4}
+                sx={{ display: "flex", justifyContent: "center" }}
+              >
+                <ButtonHome />
+              </Grid>
+              <Grid item xs={12} sm={12} md={4}></Grid>
+            </Grid>
           </Grid>
         </Grid>
 
@@ -332,8 +409,8 @@ export default function BodyHome() {
               </Box>
               <Box>
                 <Grid container spacing={0}>
-                  <Grid item sx={4} md={4}></Grid>
-                  <Grid item sx={4} md={4}>
+                  <Grid item xs={4} md={4}></Grid>
+                  <Grid item xs={4} md={4}>
                     <Box
                       sx={{
                         position: "relative",
@@ -378,7 +455,7 @@ export default function BodyHome() {
                       />
                     </Box>
                   </Grid>
-                  <Grid item sx={4} md={4}></Grid>
+                  <Grid item xs={4} md={4}></Grid>
                 </Grid>
               </Box>
             </Box>

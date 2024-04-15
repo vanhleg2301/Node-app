@@ -1,0 +1,16 @@
+.payment-page {
+    width: 100%;
+    height: auto;
+    background-color: #ffffff; 
+    border-radius: 10px; /* Đặt border radius */
+    margin-top: 40px;
+    padding: 20px; /* Thêm padding để tạo khoảng cách giữa các thành phần bên trong */
+    box-shadow: 4px 4px 4px 8px rgba(0, 0, 0, 0.3); /* Add box shadow */
+}
+
+.payment-button {
+    width: 100%;
+
+    text-align: center;
+    font-weight: bold; /* Im đậm */
+}

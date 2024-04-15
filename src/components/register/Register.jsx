@@ -199,7 +199,7 @@ export default function Register() {
               <p style={{ marginTop: "10px", textAlign: "center" }}>
                 Already have an account?{" "}
                 <Button variant="text" onClick={handleSignIn}>
-                  Sign In
+                  Sign Up
                 </Button>
               </p>
             </div>
