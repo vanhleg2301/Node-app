@@ -1,29 +1,38 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import Header from "../components/header/Header";
 import FolderList from "../components/Note/FolderList";
 import NoteList from "../components/Note/NoteList";
+import { Outlet } from "react-router-dom";
 
 export default function Note() {
   return (
     <>
-      <Header />
-      <Grid
-        container
-        sx={{
-          height: "50vh",
-          boxShadow: "0 0 15px 0 rgb(193 193 193 / 60%)",
-          marginTop: 20, // Đơn vị là vh
-        }}
-      >
-        <Grid item xs={3} sx={{ height: "100%" }}>
-          <FolderList />
+      <Box sx={{ backgroundColor: "#002333" }}>
+        <Header />
+        <Grid
+          container
+          sx={{
+            height: "100vh",
+            boxShadow: "0 0 15px 0 rgb(193 193 193 / 60%)",
+            marginTop: 3,
+            color: "white",
+          }}
+        >
+          <Grid item xs={3} sm md sx={{ height: "100%" }}>
+            <FolderList
+              folders={[
+                { id: 1, name: "Plan" },
+                { id: 2, name: "Plan for holiday" },
+              ]}
+            />
+          </Grid>
+          <Grid item xs={9} sm md sx={{ height: "100%" }}>
+            <Outlet />
+          </Grid>
         </Grid>
-        <Grid item xs={9} sx={{ height: "100%" }}>
-          <NoteList />
-        </Grid>
-      </Grid>
+      </Box>
     </>
   );
 }

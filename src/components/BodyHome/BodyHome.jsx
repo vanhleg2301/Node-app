@@ -13,12 +13,11 @@ import {
   CardContent,
   CardActions,
   Typography,
-  Link,
 } from "@mui/material";
 import ButtonHome from "../ButtonHome/ButtonHome";
 import PlayIcon from "../PlayIcon/PlayIcon";
 import { FacebookAuthProvider, getAuth } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const buttonItem = [
   "Featured",
@@ -34,6 +33,13 @@ const buttonItem = [
   "Graphic Design",
 ];
 const displayItem = ["Meo 1", "Meo 2", "Meo 3", "Meo 4"];
+
+const itemSvg = [
+  "https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/53c52f3c-sk-icon-offline.svg",
+  "https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/c69aee3e-sk-icon-watch.svg",
+  "https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/997408bc-sk-icon-learn-by-doing.svg",
+  "https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/8a92628a-sk-icon-applyforascholarship.svg",
+];
 
 const itemData = [
   {
@@ -75,6 +81,29 @@ const itemData = [
   },
 ];
 
+const testimonials = [
+  {
+    content:
+      "Skillshare has allowed me to learn Adobe Suite in a way that following random YouTube videos wouldn’t have.",
+    author: "Alex W.",
+  },
+  {
+    content:
+      "Skillshare helped me grow my art business beyond my wildest dreams! Turned it from a hobby to a passion project to a side hustle.",
+    author: "Julie W.",
+  },
+  {
+    content:
+      "The lesson format is better as opposed to structureless YouTube videos. While Youtube is good, Skillshare videos are more structured, lesson-based, and finish with a call to action that makes sure I complete the work.",
+    author: "P.J.",
+  },
+  {
+    content:
+      "Skillshare gave me insider knowledge and actionable steps to complete in order to reach my goal of becoming a better more efficient freelancer.",
+    author: "Natasha M.",
+  },
+];
+
 export default function BodyHome() {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -106,14 +135,15 @@ export default function BodyHome() {
 
   return (
     <>
-      <Box className="wrap-body">
+      <Box className="wrap-body" sx={{ fontWeight: "900" }}>
         <Box
           style={{ textAlign: "center", color: "white", paddingTop: "100px" }}
         >
           <Typography
             sx={{
               fontSize: "50px",
-              fontFamily: "Arial, sans-serif",
+              fontFamily:
+                "'GT-Walshiem-Pro-Bold', 'GT-Walshiem-Pro-Bold IE', Arial, sans-serif;",
             }}
           >
             Thousands of classes - Beginner to pro
@@ -175,7 +205,8 @@ export default function BodyHome() {
                               boxShadow: "0px 0px 15px 5px rgba(0,0,0,0.3)",
                             },
                           }}
-                          href="/note"
+                          component={Link}
+                          to="/blog"
                         >
                           <Box
                             sx={{
@@ -241,6 +272,8 @@ export default function BodyHome() {
                               },
                             }}
                             variant="contained"
+                            component={Link}
+                            to="/blog"
                           >
                             More
                           </Button>
@@ -285,7 +318,7 @@ export default function BodyHome() {
                             component="img"
                             alt="green iguana"
                             height="200"
-                            src="https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/53c52f3c-sk-icon-offline.svg"
+                            src={itemSvg[index]}
                           />
                           <CardContent>
                             <Typography
@@ -379,7 +412,11 @@ export default function BodyHome() {
                 xs={12}
                 sm={12}
                 md={4}
-                sx={{ display: "flex", justifyContent: "center" }}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  height: "56px",
+                }}
               >
                 <ButtonHome />
               </Grid>
@@ -407,57 +444,67 @@ export default function BodyHome() {
                   Why Students Love Skillshare
                 </Typography>
               </Box>
-              <Box>
-                <Grid container spacing={0}>
-                  <Grid item xs={4} md={4}></Grid>
-                  <Grid item xs={4} md={4}>
-                    <Box
-                      sx={{
-                        position: "relative",
-                        width: "100%",
-                        backgroundColor: "#ffffff",
-                        borderRadius: "20px",
-                        padding: "60px 30px 60px 30px",
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        alt="img"
-                        title="image"
-                        image="https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/3acfa0c2-sk-icon-leftquote.svg"
+              {testimonials.map((testimonial, index) => (
+                <Box key={index} sx={{ marginTop: "40px" }}>
+                  <Grid container spacing={0}>
+                    <Grid item xs={2} sm={2} md={3}></Grid>
+                    <Grid item xs={8} sm={8} md={6}>
+                      <Box
                         sx={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          width: 42,
-                          height: 30,
+                          position: "relative",
+                          width: "100%",
+                          backgroundColor: "#ffffff",
+                          borderRadius: "20px",
+                          padding: "60px 30px 60px 30px",
                         }}
-                      />
-                      <Typography>
-                        Skillshare has allowed me to learn Adobe Suite in a way
-                        that following random YouTube videos wouldn’t have. —
-                        Alex W.
-                      </Typography>
+                      >
+                        <CardMedia
+                          component="img"
+                          alt="img"
+                          title="image"
+                          image="https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/3acfa0c2-sk-icon-leftquote.svg"
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: 42,
+                            height: 30,
+                          }}
+                        />
 
-                      <CardMedia
-                        component="img"
-                        alt="img"
-                        title="image"
-                        image="https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/3acfa0c2-sk-icon-leftquote.svg"
-                        sx={{
-                          position: "absolute",
-                          bottom: 0,
-                          right: 0,
-                          width: 42,
-                          height: 30,
-                          transform: "rotate(180deg)",
-                        }}
-                      />
-                    </Box>
+                        <Typography>
+                          <Typography
+                            sx={{
+                              fontWeight: "900",
+                              fontSize: "15px",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            {testimonial.content}
+                          </Typography>
+                          — {testimonial.author}
+                        </Typography>
+
+                        <CardMedia
+                          component="img"
+                          alt="img"
+                          title="image"
+                          image="https://d9hhrg4mnvzow.cloudfront.net/join.skillshare.com/learn/3acfa0c2-sk-icon-leftquote.svg"
+                          sx={{
+                            position: "absolute",
+                            bottom: 0,
+                            right: 0,
+                            width: 42,
+                            height: 30,
+                            transform: "rotate(180deg)",
+                          }}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={3}></Grid>
                   </Grid>
-                  <Grid item xs={4} md={4}></Grid>
-                </Grid>
-              </Box>
+                </Box>
+              ))}
             </Box>
           </Grid>
         </Grid>

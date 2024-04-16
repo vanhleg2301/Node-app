@@ -19,12 +19,15 @@ import LanguageIcon from "@mui/icons-material/Language";
 import "./Header.css";
 import { AuthContext } from "../../context/AuthProvider";
 import { LanguageProvider, useLanguage } from "../../context/LanguageProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
+import SearchHeader from "../Search/SearchHeader";
 
-const pages = ["Blog", "Note"];
+const pages = ["Blog", "Note", "NetWatch"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 export default function Header() {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -39,11 +42,23 @@ export default function Header() {
     user: { displayName, photoURL, auth },
   } = useContext(AuthContext);
 
+  const handleClickPage = (page) => {
+    if (page === "Blog") {
+      navigate("/blog");
+    }
+    if (page === "Note") {
+      navigate("/note");
+    }
+    if (page === "NetWatch") {
+      navigate("/netwatch");
+    }
+  };
+
   const handleClick = (setting) => {
     if (setting === "Logout") {
       auth.signOut();
     } else if (setting === "Profile") {
-      alert("Profile");
+      navigate("/profile");
     } else if (setting === "Dashboard") {
       alert("Dashboard");
     } else {
@@ -77,16 +92,21 @@ export default function Header() {
     <LanguageProvider>
       <AppBar
         position="static"
-        sx={{ backgroundColor: "rgba(117, 216, 251, 1)" }}
+        sx={{
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          // background:"linear-gradient(180deg, rgb(141 66 66 / 80%) 0%, rgba(0, 0, 0, 0) 100%);",
+        }}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
+            {/* Left */}
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
-              component="a"
-              href="/"
+              component={Link}
+              to="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -137,13 +157,14 @@ export default function Header() {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page}>
+                {pages.map((page, index) => (
+                  <MenuItem key={index} onClick={() => handleClickPage(page)}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
+
             <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
             <Typography
               variant="h5"
@@ -163,11 +184,15 @@ export default function Header() {
             >
               LOGO
             </Typography>
+
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleCloseNavMenu}
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    handleClickPage(page);
+                  }}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page}
@@ -175,7 +200,11 @@ export default function Header() {
               ))}
             </Box>
 
-            <Box marginRight={"10px"}>
+            {/* Search Form */}
+            <SearchHeader />
+
+            {/* Right */}
+            <Box marginRight={"10px"} marginLeft={"30px"}>
               <Tooltip title="Change Language">
                 <IconButton onClick={handleLanguageChange} sx={{ p: 0 }}>
                   <LanguageIcon />
@@ -185,7 +214,7 @@ export default function Header() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={displayName}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={photoURL} />
+                  <Avatar src={photoURL} />
                 </IconButton>
               </Tooltip>
               <Menu

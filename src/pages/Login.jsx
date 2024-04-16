@@ -7,13 +7,23 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import LoginWith from "../components/LoginWith/LoginWith";
-import { Typography } from "@mui/material";
+import { IconButton, InputAdornment, Typography } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleCloseTab = () => {
     window.close();
@@ -96,6 +106,22 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
                       />
                     </Form.Group>
                   </Col>
@@ -119,7 +145,7 @@ export default function Login() {
                     Already have an account?{" "}
                     <Typography
                       component={Link}
-                      to="/payment/momo"
+                      to="/register"
                       onClick={handleCloseTab}
                     >
                       Sign In
