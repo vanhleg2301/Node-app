@@ -21,12 +21,7 @@ export default function Note() {
           }}
         >
           <Grid item xs={3} sm md sx={{ height: "100%" }}>
-            <FolderList
-              folders={[
-                { id: 1, name: "Plan" },
-                { id: 2, name: "Plan for holiday" },
-              ]}
-            />
+            <FolderList />
           </Grid>
           <Grid item xs={9} sm md sx={{ height: "100%" }}>
             <Outlet />
