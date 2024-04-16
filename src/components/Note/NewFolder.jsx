@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { CreateNewFolderOutlined } from "@mui/icons-material";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ENDPOINT } from "../../ultil/constants";
 
 export default function NewFolder({ onFolderAdded }) {
   const [newFolderName, setNewFolderName] = useState();
@@ -38,7 +39,7 @@ export default function NewFolder({ onFolderAdded }) {
 
   const handleAddNewFolder = async () => {
     try {
-      const response = await axios.post("http://localhost:9999/folders", {
+      const response = await axios.post(`${ENDPOINT}/folders`, {
         name: newFolderName,
         authorId: "1",
       });

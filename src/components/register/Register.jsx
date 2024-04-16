@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 
 import "./Register.css";
+import { ENDPOINT } from "../../ultil/constants";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:9999/auth/register", {
+      const response = await fetch(`${ENDPOINT}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

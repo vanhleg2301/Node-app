@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import NewFolder from "./NewFolder";
 import axios from "axios";
+import { ENDPOINT } from "../../ultil/constants";
 
 export default function FolderList() {
   const { folderId } = useParams();
@@ -20,7 +21,7 @@ export default function FolderList() {
   useEffect(() => {
     const fetchFolders = async () => {
       try {
-        const response = await axios.get("http://localhost:9999/folders");
+        const response = await axios.get(`${ENDPOINT}/folders`);
         setFolders(response.data);
       } catch (error) {
         console.error("Error fetching folders:", error);
@@ -32,7 +33,7 @@ export default function FolderList() {
 
   const handleDeleteFolder = async (folderId) => {
     try {
-      await axios.delete(`http://localhost:9999/folders/${folderId}`);
+      await axios.delete(`${ENDPOINT}/folders/${folderId}`);
       setFolders(folders.filter((folder) => folder._id !== folderId));
     } catch (error) {
       console.error("Error deleting folder:", error);
