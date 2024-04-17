@@ -10,7 +10,7 @@ import LoginWith from "../components/LoginWith/LoginWith";
 import { IconButton, InputAdornment, Typography } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { ENDPOINT, ENDPOINT_9999 } from "../ultil/constants";
+import { ENDPOINT } from "../ultil/constants";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -33,7 +33,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${ENDPOINT_9999}/auth/login`, {
+      const response = await fetch(`${ENDPOINT}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
