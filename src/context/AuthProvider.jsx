@@ -9,15 +9,21 @@ export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState({});
+  const [Login, sethLogin] = useState(false);
   const navigate = useNavigate();
   const auth = getAuth();
 
   useEffect(() => {
     const unsubcribed = auth.onIdTokenChanged((user) => {
       console.log("[From AuthProvider]", { user });
-      if (user?.uid) {
+      if (user?.uid || user?._id) {
         setUser(user);
         localStorage.setItem("accessToken", user.accessToken);
+        if (Login) {
+          setUser(user);
+          console.log("[From AuthProvider 1]", { user });
+          localStorage.setItem("accessToken", user.accessToken);
+        }
         return;
       }
 
@@ -30,10 +36,10 @@ export default function AuthProvider({ children }) {
       unsubcribed();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
+  }, [auth, Login]);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, Login, sethLogin }}>
       {children}
     </AuthContext.Provider>
   );

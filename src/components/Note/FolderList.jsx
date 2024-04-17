@@ -14,14 +14,22 @@ export default function FolderList() {
   const [folders, setFolders] = useState([]);
   const [activeFolderId, setActiveFolderId] = useState(folderId);
 
+  const accessToken = localStorage.getItem("accessToken");
+
   const handleFolderAdded = (newFolder) => {
-    setFolders([newFolder, ...folders]); // Thêm folder mới vào đầu danh sách
+    setFolders([newFolder, ...folders]);
   };
 
   useEffect(() => {
     const fetchFolders = async () => {
       try {
-        const response = await axios.get(`${ENDPOINT}/folders`);
+        // Thêm accessToken vào header của request
+        const response = await axios.get(`${ENDPOINT}/folders`, {
+          // Thêm headers để xác thực
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         setFolders(response.data);
       } catch (error) {
         console.error("Error fetching folders:", error);
@@ -29,7 +37,7 @@ export default function FolderList() {
     };
 
     fetchFolders();
-  }, []);
+  }, [accessToken]);
 
   const handleDeleteFolder = async (folderId) => {
     try {

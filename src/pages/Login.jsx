@@ -10,13 +10,13 @@ import LoginWith from "../components/LoginWith/LoginWith";
 import { IconButton, InputAdornment, Typography } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { ENDPOINT } from "../ultil/constants";
+import { ENDPOINT, ENDPOINT_9999 } from "../ultil/constants";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, sethLogin } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -33,7 +33,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${ENDPOINT}/auth/login`, {
+      const response = await fetch(`${ENDPOINT_9999}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,13 +45,14 @@ export default function Login() {
 
       if (response.ok) {
         // Lưu vào local storage
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
-        localStorage.setItem("existUser", data.existUser);
-        console.log(data);
+        localStorage.setItem("user", data.user);
+        const u = data.user;
+        console.log("[From login]", { u });
 
+        sethLogin(true);
         window.alert("Login successfully");
-        navigate("/");
+
+        navigate("/note");
       } else {
         window.alert("Login Fail");
         setEmail("");
@@ -61,7 +62,7 @@ export default function Login() {
       console.error("Login failed:", error);
     }
 
-    if (user.uid) {
+    if (user.uid || user._id) {
       navigate("/");
       return;
     }
@@ -107,22 +108,22 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        endAdornment={
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                              edge="end"
-                            >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        }
+                        // endAdornment={
+                        //   <InputAdornment position="end">
+                        //     <IconButton
+                        //       aria-label="toggle password visibility"
+                        //       onClick={handleClickShowPassword}
+                        //       onMouseDown={handleMouseDownPassword}
+                        //       edge="end"
+                        //     >
+                        //       {showPassword ? (
+                        //         <VisibilityOff />
+                        //       ) : (
+                        //         <Visibility />
+                        //       )}
+                        //     </IconButton>
+                        //   </InputAdornment>
+                        // }
                       />
                     </Form.Group>
                   </Col>
