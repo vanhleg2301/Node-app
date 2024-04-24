@@ -1,20 +1,18 @@
 /* eslint-disable no-unused-vars */
 import { Card, CardContent, List, Typography, IconButton } from "@mui/material";
-import { DeleteOutlined } from "@mui/icons-material";
+import { DeleteOutlined, EditOutlined } from "@mui/icons-material";
 
 import { Box } from "@mui/system";
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NewFolder from "./NewFolder";
 import axios from "axios";
 import { ENDPOINT } from "../../ultil/constants";
+import { RequestDelete, RequestGet } from "../../ultil/request";
 
 export default function FolderList() {
-  const { folderId } = useParams();
   const [folders, setFolders] = useState([]);
-  const [activeFolderId, setActiveFolderId] = useState(folderId);
-
-  const accessToken = localStorage.getItem("accessToken");
+  const [activeFolderId, setActiveFolderId] = useState();
 
   const handleFolderAdded = (newFolder) => {
     setFolders([newFolder, ...folders]);
@@ -24,28 +22,31 @@ export default function FolderList() {
     const fetchFolders = async () => {
       try {
         // Thêm accessToken vào header của request
-        const response = await axios.get(`${ENDPOINT}/folders`, {
-          // Thêm headers để xác thực
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setFolders(response.data);
+        const response = await RequestGet(`folders`);
+
+        setFolders(response);
+        console.table(response);
       } catch (error) {
         console.error("Error fetching folders:", error);
       }
     };
 
     fetchFolders();
-  }, [accessToken]);
+  }, []);
 
   const handleDeleteFolder = async (folderId) => {
     try {
-      await axios.delete(`${ENDPOINT}/folders/${folderId}`);
+      await RequestDelete(`folders/${folderId}`);
       setFolders(folders.filter((folder) => folder._id !== folderId));
+      console.log("Delete successfully");
     } catch (error) {
       console.error("Error deleting folder:", error);
     }
+  };
+
+  // Xử lý sự kiện chỉnh sửa folder
+  const handleEditFolder = (folderId) => {
+    // Điều hướng đến trang chỉnh sửa folder, sử dụng React Router DOM
   };
 
   return (
@@ -73,50 +74,65 @@ export default function FolderList() {
         </Box>
       }
     >
-      {folders.map(({ _id, name }) => (
-        <Link
-          key={_id}
-          to={`folders/${_id}`}
-          style={{
-            textDecoration: "none",
-          }}
-          onClick={() => setActiveFolderId(_id)}
-        >
-          <Card
-            sx={{
-              mb: "5px",
-              backgroundColor:
-                activeFolderId === _id ? "rgb(255 211 140)" : null,
-              position: "relative",
+      {folders &&
+        folders.map(({ _id, name }, index) => (
+          <Link
+            key={index}
+            to={`folders/${_id}`}
+            style={{
+              textDecoration: "none",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.lastChild.style.visibility = "visible")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.lastChild.style.visibility = "hidden")
-            }
+            onClick={() => setActiveFolderId(_id)}
           >
-            <CardContent
-              sx={{ "&:last-child": { pb: "10px" }, padding: "10px" }}
-            >
-              <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                {name}
-              </Typography>
-            </CardContent>
-            <IconButton
+            <Card
               sx={{
-                top: "5px",
-                right: "5px",
-                visibility: "hidden",
-                position: "absolute",
+                mb: "5px",
+                backgroundColor:
+                  activeFolderId === _id ? "rgb(255 211 140)" : null,
+                position: "relative",
               }}
-              onClick={() => handleDeleteFolder(_id)}
+              onMouseEnter={(e) =>
+                (e.currentTarget.lastChild.style.visibility = "visible")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.lastChild.style.visibility = "hidden")
+              }
             >
-              <DeleteOutlined />
-            </IconButton>
-          </Card>
-        </Link>
-      ))}
+              <CardContent
+                sx={{ "&:last-child": { pb: "10px" }, padding: "10px" }}
+              >
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  {name}
+                </Typography>
+              </CardContent>
+              <IconButton
+                sx={{
+                  top: "5px",
+                  right: "35px", // Điều chỉnh vị trí của nút chỉnh sửa
+                  visibility: "hidden",
+                  position: "absolute",
+                }}
+                onClick={(e) => {
+                  e.stopPropagation(); // Ngăn chặn sự kiện bubble lên thẻ Link
+                  handleEditFolder(_id);
+                }}
+              >
+                <EditOutlined />
+              </IconButton>
+              <IconButton
+                sx={{
+                  top: "5px",
+                  right: "5px",
+                  visibility: "hidden",
+                  position: "absolute",
+                }}
+                onClick={() => handleDeleteFolder(_id)}
+              >
+                <DeleteOutlined />
+              </IconButton>
+            </Card>
+          </Link>
+        ))}
     </List>
   );
 }

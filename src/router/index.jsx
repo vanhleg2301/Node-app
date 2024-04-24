@@ -18,6 +18,7 @@ import ProfilePage from "../pages/ProfilePage ";
 import NetWatch from "../pages/NetWatch";
 import NoteList from "../components/Note/NoteList";
 import NoteDetail from "../components/Note/NoteDetail";
+import NoteText from "../components/Note/NoteText";
 
 const AuthLayout = () => {
   return (
@@ -54,7 +55,7 @@ export default createBrowserRouter([
               {
                 path: "folders/:folderId",
                 element: <NoteList />,
-                children: [{ path: "note/:noteId", element: <NoteDetail /> }],
+                children: [{ path: "note/:noteId", element: <NoteText /> }],
               },
             ],
           },

@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -10,39 +11,52 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { CreateNewFolderOutlined } from "@mui/icons-material";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ENDPOINT } from "../../ultil/constants";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function NewFolder({ onFolderAdded }) {
-  const [newFolderName, setNewFolderName] = useState();
+  const {
+    user: { uid },
+  } = useContext(AuthContext);
+  const [newFolderName, setNewFolderName] = useState("");
   const [open, setOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const popupName = searchParams.get("popup");
+  const accessToken = localStorage.getItem("accessToken");
 
   const handleOpenPopup = () => {
-    // setOpen(true);
     setSearchParams({ popup: "add-folder" });
   };
+
   const handleClose = () => {
-    // setOpen(false);
     setNewFolderName("");
     navigate(-1);
   };
+
   const handleNewFolderNameChange = (e) => {
     setNewFolderName(e.target.value);
   };
 
   const handleAddNewFolder = async () => {
     try {
-      const response = await axios.post(`${ENDPOINT}/folders`, {
-        name: newFolderName,
-        authorId: "1",
-      });
+      const response = await axios.post(
+        `${ENDPOINT}/folders`,
+        {
+          name: newFolderName,
+          authorId: uid,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log("New folder created:", response.data);
       handleClose();
       if (onFolderAdded) {
@@ -54,13 +68,11 @@ export default function NewFolder({ onFolderAdded }) {
   };
 
   useEffect(() => {
-    console.log({ popupName });
     if (popupName === "add-folder") {
       setOpen(true);
-      return;
+    } else {
+      setOpen(false);
     }
-
-    setOpen(false);
   }, [popupName]);
 
   return (

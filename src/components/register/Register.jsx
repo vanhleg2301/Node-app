@@ -9,6 +9,8 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
+  const accessToken = localStorage.getItem("accessToken");
+
   const handleSignIn = () => {
     window.open("/login", "newwindow", "width=765, height=765");
   };
@@ -19,6 +21,7 @@ export default function Register() {
       const response = await fetch(`${ENDPOINT}/auth/register`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password, name }),

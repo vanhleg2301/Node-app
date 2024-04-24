@@ -58,7 +58,7 @@ export default function Payment() {
                   "&:hover": { color: "black" },
                 }}
               >
-                Paypal
+                Pay with Paypal
               </Button>
             </Box>
           </Grid>

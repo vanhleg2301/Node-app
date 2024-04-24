@@ -21,6 +21,7 @@ import {
   useSubmit,
 } from "react-router-dom";
 import { ENDPOINT } from "../../ultil/constants";
+import { RequestGet } from "../../ultil/request";
 
 export default function NoteList() {
   const { noteId, folderId } = useParams();
@@ -29,13 +30,15 @@ export default function NoteList() {
   const [notes, setNotes] = useState();
   const navigate = useNavigate();
   const submit = useSubmit();
+  const accessToken = localStorage.getItem("accessToken");
 
   // Lấy ra note theo folderId
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const response = await axios.get(`${ENDPOINT}/notes/${folderId}`);
-        setNotes(response.data);
+        const response = await RequestGet(`notes/${folderId}`);
+        setNotes(response);
+        console.table(response);
       } catch (error) {
         console.error("Error fetching note:", error);
       }
@@ -85,8 +88,8 @@ export default function NoteList() {
         return;
       }
 
-      const response = await axios.post(`${ENDPOINT}/notes/`, {
-        content,
+      const response = await axios.post(`http://localhost:9999/notes/`, {
+        content: content,
         folderId,
       });
 
@@ -137,7 +140,7 @@ export default function NoteList() {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography sx={{ fontWeight: "bold" }}>Notes</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>Notes </Typography>
                 <Tooltip title="Add Note">
                   <IconButton size="small" onClick={handleAddNewNote}>
                     <NoteAddOutlined />

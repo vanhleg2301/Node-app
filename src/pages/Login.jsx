@@ -5,17 +5,17 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import "./Login.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import LoginWith from "../components/LoginWith/LoginWith";
 import { IconButton, InputAdornment, Typography } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { ENDPOINT } from "../ultil/constants";
+import { Request } from "../ultil/request";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
   const { user, sethLogin } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -33,26 +33,21 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${ENDPOINT}/auth/login`, {
+      const data = await Request({ email, password }, `auth/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (data) {
         // Lưu vào local storage
         localStorage.setItem("user", data.user);
-        const u = data.user;
-        console.log("[From login]", { u });
+        localStorage.setItem("accessToken", data.accessToken);
+        const user = data.user;
+        console.log("[From login]", { user });
 
         sethLogin(true);
         window.alert("Login successfully");
 
-        navigate("/note");
+        return <Navigate to="/note" />;
       } else {
         window.alert("Login Fail");
         setEmail("");
@@ -61,12 +56,11 @@ export default function Login() {
     } catch (error) {
       console.error("Login failed:", error);
     }
-
-    if (user.uid || user._id) {
-      navigate("/");
-      return;
-    }
   };
+
+  if (localStorage.getItem("accessToken")) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <>

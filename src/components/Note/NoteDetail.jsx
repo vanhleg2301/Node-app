@@ -8,6 +8,7 @@ import {
 } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import axios from "axios"; // Import axios
 import { ENDPOINT } from "../../ultil/constants";
 import { debounce } from "@mui/material";
@@ -19,11 +20,18 @@ export default function NoteDetail() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const [rawHTML, setRawHTML] = useState(note.content);
+
+  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const response = await axios.get(`${ENDPOINT}/notes/note/${content}`);
+        const response = await axios.get(`${ENDPOINT}/notes/note/${content}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         setNote(response.data);
       } catch (error) {
         console.error("Error fetching note:", error);
@@ -43,10 +51,13 @@ export default function NoteDetail() {
     }
   }, [note]);
 
-  const handleOnChange = (editorState) => {
-    setEditorState(editorState);
-    const rawHTML = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-    debouncedMemorized(rawHTML);
+  useEffect(() => {
+    setRawHTML(note.content);
+  }, [note.content]);
+
+  const handleOnChange = (e) => {
+    setEditorState(e);
+    setRawHTML(draftToHtml(convertToRaw(e.getCurrentContent())));
   };
 
   const debouncedMemorized = useMemo(() => {
@@ -71,7 +82,6 @@ export default function NoteDetail() {
         <Editor
           editorState={editorState}
           onEditorStateChange={handleOnChange}
-          placeholder="Write something!"
         />
       )}
     </>
