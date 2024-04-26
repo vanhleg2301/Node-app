@@ -1,13 +1,18 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-
+import { useNavigate } from "react-router-dom";
 import "./Register.css";
 import { ENDPOINT } from "../../ultil/constants";
 
 export default function Register() {
+  const navigate = useNavigate();
+  const [uid, setUid] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -21,10 +26,16 @@ export default function Register() {
       const response = await fetch(`${ENDPOINT}/auth/register`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({
+          uid,
+          email,
+          password,
+          displayName,
+          photoURL,
+          phoneNumber,
+        }),
       });
 
       const data = await response.json();
@@ -32,11 +43,14 @@ export default function Register() {
 
       if (response.ok) {
         window.alert("Register successfully");
-        window.location.href = "/login";
+        setEmail("");
+        setDisplayName("");
+        setPassword("");
+        navigate("/login");
       } else {
         window.alert("Register Fail");
         setEmail("");
-        setName("");
+        setDisplayName("");
         setPassword("");
       }
     } catch (error) {
@@ -165,8 +179,8 @@ export default function Register() {
                   <Form.Control
                     type="text"
                     placeholder="Enter your name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
                     required
                   />
                 </Form.Group>

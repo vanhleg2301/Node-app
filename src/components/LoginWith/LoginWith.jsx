@@ -11,6 +11,8 @@ import {
 } from "firebase/auth";
 import { AuthContext } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ENDPOINT } from "../../ultil/constants";
 
 export default function LoginWith() {
   const navigate = useNavigate();
@@ -20,6 +22,19 @@ export default function LoginWith() {
   const handleWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const res = await signInWithPopup(auth, provider);
+    if (res.user) {
+      const userData = {
+        uid: res.user.uid,
+        email: res.user.email,
+        displayName: res.user.displayName,
+        photoURL: res.user.photoURL,
+        phoneNumber: res.user.phoneNumber,
+        accessToken: res.user.accessToken,
+        refreshToken: res.user.refreshToken,
+        // Các thông tin khác của người dùng có thể được trích xuất và gửi đi tại đây
+      };
+      saveUserDataToBackend(userData);
+    }
     console.log({ res });
   };
 
@@ -27,12 +42,37 @@ export default function LoginWith() {
     const provider = new FacebookAuthProvider();
     const res = await signInWithPopup(auth, provider);
     console.log({ res });
+    if (res.user) {
+      const userData = {
+        uid: res.user.uid,
+        email: res.user.email,
+        displayName: res.user.displayName,
+        photoURL: res.user.photoURL,
+        phoneNumber: res.user.phoneNumber,
+        accessToken: res.user.accessToken,
+        refreshToken: res.user.refreshToken,
+      };
+      saveUserDataToBackend(userData);
+    }
   };
 
   const handleWithApple = async () => {
     const provider = new EmailAuthProvider();
     const res = await signInWithPopup(auth, provider);
     console.log({ res });
+  };
+
+  const saveUserDataToBackend = async (userData) => {
+    try {
+      // Gửi thông tin người dùng đến backend
+      const response = await axios.post(
+        `http://localhost:9999/auth/loginWith`,
+        userData
+      );
+      console.log("User data saved successfully:", response.data);
+    } catch (error) {
+      console.error("Error saving user data:", error);
+    }
   };
 
   if (user && user.uid && window.location.pathname === "/login") {

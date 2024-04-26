@@ -13,12 +13,11 @@ import Payment from "../pages/Payment";
 import Momo from "../components/PaymentMethods/Momo";
 import VnPay from "../components/PaymentMethods/VnPay";
 import PayPal from "../components/PaymentMethods/PayPal";
-import BlogPage from "../pages/BlogPage";
 import ProfilePage from "../pages/ProfilePage ";
-import NetWatch from "../pages/NetWatch";
 import NoteList from "../components/Note/NoteList";
-import NoteDetail from "../components/Note/NoteDetail";
 import NoteText from "../components/Note/NoteText";
+import AuthorizationRoute from "./AuthorizationRoute";
+import Admin from "../Admin/components/Admin";
 
 const AuthLayout = () => {
   return (
@@ -38,16 +37,12 @@ export default createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          { element: <Home />, path: "/" },
+          { element: <Admin />, path: "/admin" },
           { element: <ProfilePage />, path: "/profile" },
           { element: <Payment />, path: "/payment" },
           { element: <Momo />, path: "/payment/momo" },
           { element: <VnPay />, path: "/payment/vnpay" },
           { element: <PayPal />, path: "/payment/paypal" },
-          { element: <Home />, path: "/profile" },
-          { element: <BlogPage />, path: "/blog" },
-          { element: <NetWatch />, path: "/netwatch" },
-
           {
             path: "/note",
             element: <Note />,

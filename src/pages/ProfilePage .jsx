@@ -18,7 +18,6 @@ const ProfilePage = () => {
     user: { displayName, photoURL, auth },
   } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const handleGoBack = () => {
     navigate(-1); // Quay lại trang trước đó khi nút "Back" được nhấn
   };

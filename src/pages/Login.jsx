@@ -12,11 +12,12 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { ENDPOINT } from "../ultil/constants";
 import { Request } from "../ultil/request";
+import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, sethLogin } = useContext(AuthContext);
+  const { sethLogin, setUserLogin } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -33,23 +34,28 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await Request({ email, password }, `auth/login`, {
-        method: "POST",
+      // Send login request using Axios
+      const response = await axios.post(`${ENDPOINT}/auth/login`, {
+        email,
+        password,
       });
+
+      const data = response.data; // Extract data from response
+      console.log(data);
 
       if (data) {
         // Lưu vào local storage
-        localStorage.setItem("user", data.user);
-        localStorage.setItem("accessToken", data.accessToken);
-        const user = data.user;
-        console.log("[From login]", { user });
 
+        const user = data.user;
+        localStorage.setItem("user", user);
+        localStorage.setItem("accessToken", data.accessToken);
         sethLogin(true);
+        setUserLogin(user);
         window.alert("Login successfully");
 
-        return <Navigate to="/note" />;
+        // return <Navigate to="/note" />;
       } else {
-        window.alert("Login Fail");
+        console.log("Login Fail");
         setEmail("");
         setPassword("");
       }

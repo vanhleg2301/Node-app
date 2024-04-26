@@ -3,14 +3,18 @@ import { Card, CardContent, List, Typography, IconButton } from "@mui/material";
 import { DeleteOutlined, EditOutlined } from "@mui/icons-material";
 
 import { Box } from "@mui/system";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import NewFolder from "./NewFolder";
 import axios from "axios";
 import { ENDPOINT } from "../../ultil/constants";
 import { RequestDelete, RequestGet } from "../../ultil/request";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function FolderList() {
+  const {
+    user: { uid },
+  } = useContext(AuthContext);
   const [folders, setFolders] = useState([]);
   const [activeFolderId, setActiveFolderId] = useState();
 
@@ -22,7 +26,7 @@ export default function FolderList() {
     const fetchFolders = async () => {
       try {
         // Thêm accessToken vào header của request
-        const response = await RequestGet(`folders`);
+        const response = await RequestGet(`folders/${uid}`);
 
         setFolders(response);
         console.table(response);
@@ -32,7 +36,7 @@ export default function FolderList() {
     };
 
     fetchFolders();
-  }, []);
+  }, [uid]);
 
   const handleDeleteFolder = async (folderId) => {
     try {
@@ -105,6 +109,8 @@ export default function FolderList() {
                   {name}
                 </Typography>
               </CardContent>
+
+              {/* 
               <IconButton
                 sx={{
                   top: "5px",
@@ -119,6 +125,8 @@ export default function FolderList() {
               >
                 <EditOutlined />
               </IconButton>
+            */}
+
               <IconButton
                 sx={{
                   top: "5px",

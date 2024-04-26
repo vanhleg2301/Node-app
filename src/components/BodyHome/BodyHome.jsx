@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useContext } from "react";
 import "./BodyHome.css";
 
 import {
@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import ButtonHome from "../ButtonHome/ButtonHome";
 import PlayIcon from "../PlayIcon/PlayIcon";
-import { FacebookAuthProvider, getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 const buttonItem = [

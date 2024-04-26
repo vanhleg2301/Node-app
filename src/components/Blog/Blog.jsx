@@ -1,8 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Import Axios
-import { ENDPOINT } from "../../ultil/constants";
-import { Box, Typography } from "@mui/material/";
 import { RequestGet } from "../../ultil/request";
 
 export default function Blog() {
@@ -24,5 +21,5 @@ export default function Blog() {
     fetchData(); // Call the fetchData function
   }, []); // Empty dependency array ensures this effect runs only once
 
-  return <></>;
+  return <>Hi</>;
 }
