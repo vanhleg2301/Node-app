@@ -20,7 +20,6 @@ import "./Header.css";
 import { AuthContext } from "../../context/AuthProvider";
 import { LanguageProvider, useLanguage } from "../../context/LanguageProvider";
 import { Link, useNavigate } from "react-router-dom";
-import { TextField } from "@mui/material";
 import SearchHeader from "../Search/SearchHeader";
 
 const pages = ["Blog", "Note", "NetWatch"];
@@ -36,11 +35,13 @@ export default function Header() {
     if (localStorage.getItem("accessToken")) {
       setIsLoggedIn(true);
     }
-  }, []); // Empty dependency array ensures this effect only runs once after the initial render
+  }, [isLoggedIn]); // Empty dependency array ensures this effect only runs once after the initial render
 
   const {
     user: { displayName, photoURL, auth },
   } = useContext(AuthContext);
+
+  const { setUserLogin } = useContext(AuthContext);
 
   const handleClickPage = (page) => {
     if (page === "Blog") {
@@ -212,9 +213,9 @@ export default function Header() {
               </Tooltip>
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title={displayName}>
+              <Tooltip title={displayName || setUserLogin.displayName}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar src={photoURL} />
+                  <Avatar src={photoURL || setUserLogin.photoURL} />
                 </IconButton>
               </Tooltip>
               <Menu

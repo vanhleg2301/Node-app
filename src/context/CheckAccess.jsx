@@ -1,22 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useContext } from "react";
 import Authentication from "./Authentication";
-import { AuthContext } from "./AuthProvider";
 
-export function CheckAccess() {
-  const {
-    user: { uid },
-  } = useContext(AuthContext);
-
-  const { isAdmin } = Authentication();
-  const check = useCallback(
-    function ({ accessRole }) {
+export default function CheckAccess() {
+  const { isAdmin, uid } = Authentication();
+  // console.log(isAdmin, uid);  true, UT5inrpIuaPOv94Blum8z9fEjFI2
+  return useCallback(
+    function ({ accessRoles }) {
+      if (!localStorage.getItem("accessToken")) return false;
       if (isAdmin) return true;
-      return accessRole.includes(uid);
+      return accessRoles.includes(uid);
     },
     [isAdmin, uid]
   );
-  return {
-    check,
-  };
 }

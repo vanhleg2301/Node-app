@@ -13,7 +13,7 @@ export default function Banner() {
     if (localStorage.getItem("accessToken")) {
       setIsLoggedIn(true);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <>

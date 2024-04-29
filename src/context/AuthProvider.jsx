@@ -17,39 +17,62 @@ export default function AuthProvider({ children }) {
   const auth = getAuth();
 
   useEffect(() => {
-    const unsubcribed = auth.onIdTokenChanged((user) => {
-      if (user?.uid) {
-        console.log("[From AuthProvider]", { user });
-        setUser(user);
-        if (user.accessToken !== localStorage.getItem("accessToken")) {
-          localStorage.setItem("accessToken", user.accessToken);
-          window.location.reload();
+    if (!Login) {
+      const unsubcribed = auth.onIdTokenChanged((user) => {
+        if (user?.uid) {
+          console.log("[From AuthProvider]", { auth });
+          console.log("[From AuthProvider]", { user });
+          setUser(user);
+          if (user.accessToken !== localStorage.getItem("accessToken")) {
+            localStorage.setItem("accessToken", user.accessToken);
+            window.location.reload();
+          }
+          setIsLoading(false);
+          return;
         }
+
+        // reset user info
+
+        console.log("reset");
+        console.log(auth);
         setIsLoading(false);
-        return;
-      } else if (Login) {
-        console.log("[From loginWith]", { userLogin });
-        localStorage.setItem("user", userLogin);
-        setUser(userLogin);
-        if (user.accessToken !== localStorage.getItem("accessToken")) {
-          localStorage.setItem("accessToken", user.accessToken);
-          window.location.reload();
+        setUser({});
+        localStorage.clear();
+        navigate("/login");
+      });
+
+      return () => {
+        unsubcribed();
+      };
+    } else {
+      const unsubcribed2 = () => {
+        if (Login) {
+          console.log("[From loginWith]", { Login });
+          console.log("[From loginWith]", { userLogin });
+          localStorage.setItem("user", userLogin);
+          setUser(userLogin);
+          if (userLogin.accessToken !== localStorage.getItem("accessToken")) {
+            localStorage.setItem("accessToken", userLogin.accessToken);
+            window.location.reload();
+          }
+          setIsLoading(false);
+          return;
         }
+
+        // reset user info
+
+        console.log("reset");
+        console.log("[From loginWith]", { Login });
         setIsLoading(false);
-        return;
-      }
+        setUser({});
+        localStorage.clear();
+        navigate("/login");
+      };
 
-      // reset user info
-      console.log("reset");
-      setIsLoading(false);
-      setUser({});
-      localStorage.clear();
-      navigate("/login");
-    });
-
-    return () => {
-      unsubcribed();
-    };
+      return () => {
+        unsubcribed2();
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth, Login]);
 

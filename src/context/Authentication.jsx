@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./AuthProvider";
@@ -16,7 +17,8 @@ export default function Authentication() {
     }
   }, [accessToken]);
 
-  const isAdmin = accessToken && uid === "UT5inrpIuaPOv94Blum8z9fEjFI2";
-
-  return { isAdmin, uid };
+  if (accessToken) {
+    const isAdmin = uid === "UT5inrpIuaPOv94Blum8z9fEjFI2";
+    return { isAdmin, uid };
+  }
 }
