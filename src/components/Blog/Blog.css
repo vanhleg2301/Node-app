@@ -1,0 +1,21 @@
+
+  @keyframes slideBackground {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+.blog {
+    background-image: url(../../../public/img/background.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    animation: slideBackground 10s linear infinite; /* Thực hiện animation mỗi 10 giây */
+  }
+
+  

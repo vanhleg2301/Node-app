@@ -22,7 +22,7 @@ import { LanguageProvider, useLanguage } from "../../context/LanguageProvider";
 import { Link, useNavigate } from "react-router-dom";
 import SearchHeader from "../Search/SearchHeader";
 
-const pages = ["Blog", "Note", "NetWatch"];
+const pages = ["Blog", "Note", "NetWatch", "Cooking"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 export default function Header() {
@@ -52,6 +52,9 @@ export default function Header() {
     }
     if (page === "NetWatch") {
       navigate("/netwatch");
+    }
+    if (page === "Cooking") {
+      navigate("/cooking");
     }
   };
 
@@ -94,7 +97,8 @@ export default function Header() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: "transparent",
+          backgroundColor: "#002333",
+          // backgroundColor: "transparent",
           boxShadow: "none",
           // background:"linear-gradient(180deg, rgb(141 66 66 / 80%) 0%, rgba(0, 0, 0, 0) 100%);",
         }}

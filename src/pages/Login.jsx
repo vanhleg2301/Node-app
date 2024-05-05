@@ -79,6 +79,14 @@ export default function Login() {
             </div>
             <div style={{ textAlign: "center" }}>
               <h6>Sign in to my website</h6>
+              <Link component to="/">
+                <Button
+                  variant="outlined"
+                  style={{ backgroundColor: "#00FF84" }}
+                >
+                  VIEW
+                </Button>
+              </Link>
             </div>
             <div className="form-text">
               <Form onSubmit={handleSubmit}>

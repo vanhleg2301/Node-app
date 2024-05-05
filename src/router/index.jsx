@@ -9,6 +9,7 @@ import AuthorizationRoute from "./AuthorizationRoute";
 import Admin from "../Admin/components/Admin";
 import authRoute from "./auth.route";
 import PublicRoute from "./PublicRoute";
+import Public from "./Public";
 
 const AuthLayout = () => {
   return (
@@ -31,6 +32,7 @@ export default createBrowserRouter([
       },
     ],
   },
+  Public(),
   PublicRoute(),
   authRoute(),
 ]);

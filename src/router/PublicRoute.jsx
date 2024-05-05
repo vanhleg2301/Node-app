@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Home from "../pages/Home";
 import BlogPage from "../pages/BlogPage";
 import NetWatch from "../pages/NetWatch";
 import ProfilePage from "../pages/ProfilePage ";
@@ -14,11 +13,13 @@ import NoteList from "../components/Note/NoteList";
 import NoteText from "../components/Note/NoteText";
 import AuthProvider from "../context/AuthProvider";
 import ErrorPage from "../pages/ErrorPage";
+import BlogDetailPage from "../pages/BlogDetailPage";
+import Layout from "../context/Layout";
 
 const AuthLayout = () => {
   return (
     <AuthProvider>
-      <Outlet />
+      <Layout />
     </AuthProvider>
   );
 };
@@ -29,14 +30,13 @@ export default function PublicRoute() {
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
         element: <Outlet />,
         children: [
-          { index: true, element: <Home /> },
-          { element: <Home />, path: "/" },
-          { element: <BlogPage />, path: "/blog" },
           { element: <NetWatch />, path: "/netwatch" },
           { element: <ProfilePage />, path: "/profile" },
+          { path: "/blog", element: <BlogPage /> },
+          { path: "/blog/detail", element: <BlogDetailPage /> },
+
           {
             path: "/note",
             element: <Note />,
@@ -48,15 +48,10 @@ export default function PublicRoute() {
               },
             ],
           },
-          {
-            element: <Payment />,
-            path: "/payment",
-            children: [
-              { path: "momo", element: <Momo /> },
-              { path: "vnpay", element: <VnPay /> },
-              { path: "paypal", element: <PayPal /> },
-            ],
-          },
+          { path: "/payment", element: <Payment /> },
+          { path: "/payment/momo", element: <Momo /> },
+          { path: "/payment/vnpay", element: <VnPay /> },
+          { path: "/payment/paypal", element: <PayPal /> },
         ],
       },
     ],

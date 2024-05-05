@@ -8,7 +8,6 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";

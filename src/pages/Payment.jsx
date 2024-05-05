@@ -8,7 +8,6 @@ import Header from "../components/header/Header";
 export default function Payment() {
   return (
     <>
-      <Header />
       <Box className="payment-page">
         <Grid container>
           <Grid item xs={3} sm={12} md={3}></Grid>
