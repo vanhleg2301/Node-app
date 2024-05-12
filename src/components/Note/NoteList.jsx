@@ -10,26 +10,20 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
-import {
-  Link,
-  Outlet,
-  useParams,
-  useNavigate,
-  useSubmit,
-} from "react-router-dom";
+import { Link, Outlet, useParams, useNavigate } from "react-router-dom";
 import { ENDPOINT } from "../../ultil/constants";
 import { RequestGet } from "../../ultil/request";
+import { AuthContext } from "../../context/AuthProvider";
 
 export default function NoteList() {
-  const { noteId, folderId } = useParams();
+  const { folderId } = useParams();
   const [folder, setFolder] = useState(null);
   const [activeNoteId, setActiveNoteId] = useState();
   const [notes, setNotes] = useState();
   const navigate = useNavigate();
-  const submit = useSubmit();
   const accessToken = localStorage.getItem("accessToken");
 
   // Lấy ra note theo folderId
@@ -62,45 +56,36 @@ export default function NoteList() {
     fetchFolder();
   }, [notes]);
 
-  useEffect(() => {
-    // Kiểm tra nếu activeNoteId không thuộc danh sách các ghi chú của thư mục,
-    // thì cập nhật activeNoteId thành ghi chú đầu tiên trong danh sách
-    if (
-      !folder ||
-      !folder.notes ||
-      !folder.notes.some((note) => note._id === activeNoteId)
-    ) {
-      setActiveNoteId(noteId || folder?.notes?.[0]?._id || null);
-    }
-  }, [folder, activeNoteId, noteId]);
-
-  // //
-  // useEffect(() => {
-  //   if (notes && notes.length > 0 && !noteId) {
-  //     navigate(`note/${notes[0].id}`);
-  //   }
-  // }, [notes, navigate, noteId]);
-
-  const handleAddNewNote = async (content, folderId) => {
+  const handleAddNewNote = async () => {
     try {
-      if (!content) {
-        console.error("Note content cannot be empty.");
+      if (!folderId) {
+        console.log(folderId);
+        console.error("FolderId cannot be empty.");
         return;
       }
 
-      const response = await axios.post(`http://localhost:9999/notes/`, {
-        content: content,
-        folderId,
+      const requestData = {
+        content: "",
+        folderId: folderId, // Use the extracted folderId
+      };
+
+      const response = await axios.post(`${ENDPOINT}/notes/`, requestData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
       });
 
       console.log("New note added:", response.data);
 
       // Cập nhật danh sách ghi chú sau khi thêm mới thành công
       const newNote = response.data;
-      setNotes((prevNotes) => [...prevNotes, newNote]);
+      setNotes((prevNotes) => [newNote, ...prevNotes]);
 
       // Điều hướng người dùng đến ghi chú mới được tạo
-      navigate(`/note/${newNote.id}`);
+
+      setActiveNoteId(newNote._id);
+      navigate(`/note/folders/${folderId}/note/${newNote._id}`);
     } catch (error) {
       console.error("Error adding new note:", error);
     }
@@ -160,7 +145,7 @@ export default function NoteList() {
                   sx={{
                     mb: "5px",
                     backgroundColor:
-                      _id === activeNoteId ? "rgb(255 211 140)" : null,
+                      activeNoteId === _id ? "rgb(255 211 140)" : null,
                     position: "relative",
                   }}
                   onMouseEnter={(e) =>

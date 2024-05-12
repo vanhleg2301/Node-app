@@ -22,7 +22,7 @@ import { LanguageProvider, useLanguage } from "../../context/LanguageProvider";
 import { Link, useNavigate } from "react-router-dom";
 import SearchHeader from "../Search/SearchHeader";
 
-const pages = ["Blog", "Note", "NetWatch", "Cooking"];
+const pages = ["Blog", "Note", "edit", "cá ngựa", "NetWatch", "Cooking"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
 export default function Header() {
@@ -55,6 +55,12 @@ export default function Header() {
     }
     if (page === "Cooking") {
       navigate("/cooking");
+    }
+    if (page === "edit") {
+      navigate("/edit");
+    }
+    if (page === "cá ngựa") {
+      navigate("/cá ngựa");
     }
   };
 

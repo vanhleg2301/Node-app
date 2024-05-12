@@ -15,6 +15,12 @@ import AuthProvider from "../context/AuthProvider";
 import ErrorPage from "../pages/ErrorPage";
 import BlogDetailPage from "../pages/BlogDetailPage";
 import Layout from "../context/Layout";
+import Feedback from "../components/feedback/Feedback";
+import Cooking from "../components/Cooking/Cooking";
+import HomeEdit from "../components/Chat/HomeEdit";
+import Add from "../components/Chat/Add";
+import Edit from "../components/Chat/Edit";
+import NoteDetail from "../components/Note/NoteDetail";
 
 const AuthLayout = () => {
   return (
@@ -34,8 +40,13 @@ export default function PublicRoute() {
         children: [
           { element: <NetWatch />, path: "/netwatch" },
           { element: <ProfilePage />, path: "/profile" },
+          { path: "/cooking", element: <Cooking /> },
+          { path: "/edit", element: <HomeEdit /> },
+          { path: "/edit/add", element: <Add /> },
+          { path: "/edit/:id", element: <Edit /> },
           { path: "/blog", element: <BlogPage /> },
           { path: "/blog/detail", element: <BlogDetailPage /> },
+          { path: "/blog/detail/feedback", element: <Feedback /> },
 
           {
             path: "/note",
@@ -44,7 +55,7 @@ export default function PublicRoute() {
               {
                 path: "folders/:folderId",
                 element: <NoteList />,
-                children: [{ path: "note/:noteId", element: <NoteText /> }],
+                children: [{ path: "note/:noteId", element: <NoteDetail /> }],
               },
             ],
           },

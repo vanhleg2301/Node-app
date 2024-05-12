@@ -3,6 +3,7 @@
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { AddCircleOutline } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 export default function BlogDetail() {
   const [isFollowed, setIsFollowed] = useState(false);
@@ -34,6 +35,9 @@ export default function BlogDetail() {
               <Typography variant="h5" sx={{ marginTop: 2 }}>
                 Vanh
               </Typography>
+              <Button component={Link} to={`feedback`}>
+                Feedback
+              </Button>
               <Typography variant="subtitle1" sx={{ color: "text.secondary" }}>
                 Web Developer
               </Typography>

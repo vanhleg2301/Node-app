@@ -24,7 +24,7 @@ export const Request = async (payload, uri) => {
   return null;
 };
 
-export const RequestGet = async (uri, options = {}) => {
+export const RequestGet = async (uri) => {
   if (localStorage.getItem("accessToken")) {
     const accessToken = localStorage.getItem("accessToken");
     const res = await axios.get(`${ENDPOINT}/${uri}`, {
@@ -33,7 +33,7 @@ export const RequestGet = async (uri, options = {}) => {
         // "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: `Bearer ${accessToken}`,
-        ...options,
+        // ...options,
       },
     });
 
@@ -44,14 +44,13 @@ export const RequestGet = async (uri, options = {}) => {
   return null;
 };
 
-export const RequestDelete = async (uri, options = {}) => {
+export const RequestDelete = async (uri) => {
   if (localStorage.getItem("accessToken")) {
     const accessToken = localStorage.getItem("accessToken");
     const res = await axios.delete(`${ENDPOINT}/${uri}`, {
       headers: {
-        Accept: "application/json",
         Authorization: `Bearer ${accessToken}`,
-        ...options,
+        "Content-Type": "application/json",
       },
     });
 

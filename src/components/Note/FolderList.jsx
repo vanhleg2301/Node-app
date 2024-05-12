@@ -10,6 +10,7 @@ import axios from "axios";
 import { ENDPOINT } from "../../ultil/constants";
 import { RequestDelete, RequestGet } from "../../ultil/request";
 import { AuthContext } from "../../context/AuthProvider";
+import moment from "moment";
 
 export default function FolderList() {
   const {
@@ -40,9 +41,19 @@ export default function FolderList() {
 
   const handleDeleteFolder = async (folderId) => {
     try {
-      await RequestDelete(`folders/${folderId}`);
-      setFolders(folders.filter((folder) => folder._id !== folderId));
-      console.log("Delete successfully");
+      // Hiển thị cửa sổ cảnh báo xác nhận xóa
+      const isConfirmed = window.confirm(
+        "Are you sure you want to delete this folder?"
+      );
+
+      // Nếu người dùng xác nhận xóa
+      if (isConfirmed) {
+        await RequestDelete(`folders/${folderId}`);
+        setFolders(folders.filter((folder) => folder._id !== folderId));
+        console.log("Delete successfully");
+      } else {
+        console.log("Cancel delete");
+      }
     } catch (error) {
       console.error("Error deleting folder:", error);
     }
@@ -79,7 +90,7 @@ export default function FolderList() {
       }
     >
       {folders &&
-        folders.map(({ _id, name }, index) => (
+        folders.map(({ _id, name, updatedAt }, index) => (
           <Link
             key={index}
             to={`folders/${_id}`}
@@ -106,7 +117,15 @@ export default function FolderList() {
                 sx={{ "&:last-child": { pb: "10px" }, padding: "10px" }}
               >
                 <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-                  {name}
+                  <div
+                    style={{ fontWeight: "bold" }}
+                    dangerouslySetInnerHTML={{
+                      __html: `${name.substring(0, 30) || "Empty"}`,
+                    }}
+                  />
+                </Typography>
+                <Typography sx={{ fontSize: "10px" }}>
+                  {moment(updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
                 </Typography>
               </CardContent>
 
