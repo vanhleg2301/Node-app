@@ -14,69 +14,71 @@ import { ENDPOINT } from "../../ultil/constants";
 import { useParams } from "react-router-dom";
 
 export default function NoteDetail() {
-  const { id } = useParams();
-  const [note, setNote] = useState(null);
+  const { noteId } = useParams(); //children: [{ path: "note/:noteId", element: <NoteDetail /> }],
+  const [rawHTML, setRawHTML] = useState(""); // Change to string instead of array
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  const [rawHTML, setRawHTML] = useState(null); // Sử dụng null thay vì note để tránh gán giá trị null cho note ban đầu
-  const [isMounted, setIsMounted] = useState(false);
+  const accessToken = localStorage.getItem("accessToken");
 
-  useEffect(() => {
-    setIsMounted(true);
-    return () => {
-      setIsMounted(false);
-    };
-  }, []);
-  console.log(id);
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const response = await axios.get(`${ENDPOINT}/notes/note/${id}`);
-
-        if (isMounted) {
-          setNote(response.data);
-        }
+        const response = await axios.get(`${ENDPOINT}/notes/note/${noteId}`);
+        setRawHTML(response.data.content);
       } catch (error) {
         console.error("Error fetching note:", error);
       }
     };
 
-    fetchNote();
-
-    // Cleanup function
-    return () => {
-      // Ensure setIsMounted is called only when component is mounted
-      if (isMounted) {
-        setIsMounted(false);
-      }
-    };
-  }, [id, isMounted]);
+    if (noteId) {
+      fetchNote();
+    }
+  }, [noteId]);
 
   useEffect(() => {
-    if (note && typeof note === "string" && note.trim() !== "") {
-      const blocksFromHTML = convertFromHTML(note);
+    if (rawHTML && typeof rawHTML === "string" && rawHTML.trim() !== "") {
+      const blocksFromHTML = convertFromHTML(rawHTML);
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
       );
       setEditorState(EditorState.createWithContent(state));
-      setRawHTML(note); // Gán giá trị cho rawHTML khi note có giá trị
     }
-  }, [note]);
+  }, [rawHTML]);
 
   const handleOnChange = (editorState) => {
     setEditorState(editorState);
-    setRawHTML(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+    const updatedContent = draftToHtml(
+      convertToRaw(editorState.getCurrentContent())
+    );
+
+    if (accessToken && noteId) {
+      axios
+        .put(
+          `${ENDPOINT}/notes/${noteId}`,
+          { content: updatedContent },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(() => {
+          setRawHTML(updatedContent); // Update rawHTML with the new content
+        })
+        .catch((error) => {
+          console.error("Error updating note content:", error);
+        });
+    }
   };
 
   return (
-    <>
-      <Editor
-        editorState={editorState}
-        onEditorStateChange={handleOnChange}
-        placeholder="Enter your note here..."
-      />
-    </>
+    <Editor
+      editorState={editorState}
+      onEditorStateChange={handleOnChange}
+      placeholder="Enter your note here..."
+    />
   );
 }

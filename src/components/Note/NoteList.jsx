@@ -137,7 +137,7 @@ export default function NoteList() {
             {folder?.notes?.map(({ _id, content, updatedAt }) => (
               <Link
                 key={_id}
-                to={`note/${_id}`}
+                to={`/note/folders/${folderId}/note/${_id}`}
                 style={{ textDecoration: "none" }}
                 onClick={() => setActiveNoteId(_id)}
               >
