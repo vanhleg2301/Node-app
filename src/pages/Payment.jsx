@@ -2,7 +2,7 @@
 import { Box, Button, Grid } from "@mui/material";
 import React from "react";
 import "./Payment.css";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Header from "../components/header/Header";
 
 export default function Payment() {
@@ -10,8 +10,7 @@ export default function Payment() {
     <>
       <Box className="payment-page">
         <Grid container>
-          <Grid item xs={3} sm={12} md={3}></Grid>
-          <Grid item xs={6} sm={12} md={6}>
+          <Grid item md={4}>
             <Box>
               <Button
                 variant="light"
@@ -61,7 +60,9 @@ export default function Payment() {
               </Button>
             </Box>
           </Grid>
-          <Grid item xs={3} sm={12} md={3}></Grid>
+          <Grid item md={8} sx={{ textAlign: "center" }}>
+            <Outlet />
+          </Grid>
         </Grid>
       </Box>
     </>

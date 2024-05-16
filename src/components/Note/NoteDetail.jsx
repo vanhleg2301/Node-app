@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import {
@@ -26,6 +29,7 @@ export default function NoteDetail() {
       try {
         const response = await axios.get(`${ENDPOINT}/notes/note/${noteId}`);
         setRawHTML(response.data.content);
+        console.log(response.data.content);
       } catch (error) {
         console.error("Error fetching note:", error);
       }
@@ -47,11 +51,33 @@ export default function NoteDetail() {
     }
   }, [rawHTML]);
 
-  const handleOnChange = (editorState) => {
-    setEditorState(editorState);
-    const updatedContent = draftToHtml(
-      convertToRaw(editorState.getCurrentContent())
-    );
+  useEffect(() => {
+    debouncedMemorized(rawHTML, note, location.pathname);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawHTML, location.pathname]);
+
+  const debouncedMemorized = useMemo(() => {
+    return debounce((rawHTML, note, pathname) => {
+      if (rawHTML === note.content) return;
+
+      submit(
+        { ...note, content: rawHTML },
+        {
+          method: "post",
+          action: pathname,
+        }
+      );
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setRawHTML(note.content);
+  }, [note.content]);
+
+  const handleOnChange = (e) => {
+    setEditorState(e);
+    setRawHTML(draftToHtml(convertToRaw(e.getCurrentContent())));
 
     if (accessToken && noteId) {
       axios
@@ -67,6 +93,7 @@ export default function NoteDetail() {
         )
         .then(() => {
           setRawHTML(updatedContent); // Update rawHTML with the new content
+          setEditorState(e);
         })
         .catch((error) => {
           console.error("Error updating note content:", error);

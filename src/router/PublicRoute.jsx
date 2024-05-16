@@ -21,6 +21,7 @@ import HomeEdit from "../components/Chat/HomeEdit";
 import Add from "../components/Chat/Add";
 import Edit from "../components/Chat/Edit";
 import NoteDetail from "../components/Note/NoteDetail";
+import Meeting from "../pages/Meeting";
 
 const AuthLayout = () => {
   return (
@@ -44,6 +45,7 @@ export default function PublicRoute() {
           { path: "/edit", element: <HomeEdit /> },
           { path: "/edit/add", element: <Add /> },
           { path: "/edit/:id", element: <Edit /> },
+          { path: "/meeting", element: <Meeting /> },
           { path: "/blog", element: <BlogPage /> },
           { path: "/blog/detail", element: <BlogDetailPage /> },
           { path: "/blog/detail/feedback", element: <Feedback /> },
@@ -59,10 +61,15 @@ export default function PublicRoute() {
               },
             ],
           },
-          { path: "/payment", element: <Payment /> },
-          { path: "/payment/momo", element: <Momo /> },
-          { path: "/payment/vnpay", element: <VnPay /> },
-          { path: "/payment/paypal", element: <PayPal /> },
+          {
+            path: "/payment",
+            element: <Payment />,
+            children: [
+              { path: "momo", element: <Momo /> },
+              { path: "vnpay", element: <VnPay /> },
+              { path: "paypal", element: <PayPal /> },
+            ],
+          },
         ],
       },
     ],
