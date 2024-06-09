@@ -7,6 +7,9 @@ import {
   Grid,
   Avatar,
   Button,
+  TextField,
+  Divider,
+  Box,
 } from "@mui/material";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
@@ -14,12 +17,14 @@ import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const {
-    user: { displayName, photoURL, auth },
+    user: { displayName, photoURL, auth, email },
   } = useContext(AuthContext);
   const navigate = useNavigate();
-  const handleGoBack = () => {
-    navigate(-1); // Quay lại trang trước đó khi nút "Back" được nhấn
+
+  const handleSearchChange = (event) => {
+    return;
   };
+
   return (
     <Container maxWidth="md">
       <Paper sx={{ padding: 2, marginTop: 4 }}>
@@ -29,6 +34,7 @@ const ProfilePage = () => {
               sx={{ width: 120, height: 120, margin: "auto" }}
               src={photoURL}
             />
+
             <Typography variant="h5" sx={{ marginTop: 2 }}>
               {displayName}
             </Typography>
@@ -37,7 +43,23 @@ const ProfilePage = () => {
             </Typography>
           </Grid>
           <Grid item xs={12} md={9}>
-            <Typography variant="h6">About {displayName}</Typography>
+            <Box sx={{ textAlign: "center" }}>
+              <TextField
+                abel="Email"
+                variant="outlined"
+                value={email}
+                onChange={handleSearchChange}
+                aria-readonly
+              />
+            </Box>
+
+            <Divider
+              sx={{
+                margin: "20px auto",
+                width: "80%",
+                backgroundColor: "black",
+              }}
+            />
             <Typography variant="body1">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
               felis nibh, volutpat vel sapien eget, tincidunt scelerisque
@@ -45,17 +67,14 @@ const ProfilePage = () => {
               massa id semper scelerisque. Duis eu libero et neque venenatis
               posuere.
             </Typography>
-            <Button
-              variant="contained"
-              sx={{ marginTop: 2 }}
-              onClick={handleGoBack}
-            >
-              Back
-            </Button>
-
-            <Button variant="contained" sx={{ marginTop: 2, marginLeft: 2 }}>
-              Edit Profile
-            </Button>
+            <Box sx={{ textAlign: "center" }}>
+              <Button variant="contained" sx={{ marginTop: 2, marginLeft: 2 }}>
+                Edit Profile
+              </Button>
+              <Button variant="contained" sx={{ marginTop: 2, marginLeft: 2 }}>
+                Change password
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Paper>

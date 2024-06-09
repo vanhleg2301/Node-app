@@ -25,7 +25,7 @@ export default function Banner() {
                 width: 40,
                 height: 40,
               }}
-              src="./img/meoden-removebg-preview.png"
+              src="/img/meoden-removebg-preview.png"
               alt="img"
             />
           </div>

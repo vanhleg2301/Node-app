@@ -10,7 +10,6 @@ import VnPay from "../components/PaymentMethods/VnPay";
 import PayPal from "../components/PaymentMethods/PayPal";
 import Note from "../pages/Note";
 import NoteList from "../components/Note/NoteList";
-import NoteText from "../components/Note/NoteText";
 import AuthProvider from "../context/AuthProvider";
 import ErrorPage from "../pages/ErrorPage";
 import BlogDetailPage from "../pages/BlogDetailPage";
@@ -22,6 +21,8 @@ import Add from "../components/Chat/Add";
 import Edit from "../components/Chat/Edit";
 import NoteDetail from "../components/Note/NoteDetail";
 import Meeting from "../pages/Meeting";
+import Content from "../components/meeting/Content";
+import Cv from "../components/meeting/Cv";
 
 const AuthLayout = () => {
   return (
@@ -39,17 +40,32 @@ export default function PublicRoute() {
       {
         element: <Outlet />,
         children: [
+          // { element: <ProfilePage />, path: "/profile" },
+
+          // more
           { element: <NetWatch />, path: "/netwatch" },
-          { element: <ProfilePage />, path: "/profile" },
           { path: "/cooking", element: <Cooking /> },
+          // form
           { path: "/edit", element: <HomeEdit /> },
           { path: "/edit/add", element: <Add /> },
           { path: "/edit/:id", element: <Edit /> },
-          { path: "/meeting", element: <Meeting /> },
+          // meeting
+          {
+            path: "/meeting",
+            element: <Meeting />,
+            children: [
+              { path: "profile", element: <ProfilePage /> },
+              { path: "cv", element: <Cv /> },
+              { path: "company", element: <Content /> },
+            ],
+          },
+
+          // blog
           { path: "/blog", element: <BlogPage /> },
           { path: "/blog/detail", element: <BlogDetailPage /> },
           { path: "/blog/detail/feedback", element: <Feedback /> },
 
+          // note
           {
             path: "/note",
             element: <Note />,
@@ -61,6 +77,8 @@ export default function PublicRoute() {
               },
             ],
           },
+
+          // payment
           {
             path: "/payment",
             element: <Payment />,

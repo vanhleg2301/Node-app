@@ -25,7 +25,7 @@ export default function authRoute() {
         children: [
           { index: true, element: <Navigate to="/login" /> }, // Navigate to "/login"
           {
-            path: "login", // Corrected zpath to "login"
+            path: "login", // Corrected path to "login"
             element: <Login />,
           },
         ],

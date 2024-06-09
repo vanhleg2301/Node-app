@@ -28,7 +28,14 @@ export default function UserMenu() {
   };
 
   const handleLogout = () => {
-    auth.signOut();
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this folder?"
+    );
+    if (!isConfirmed) {
+      handleClose();
+    } else {
+      auth.signOut();
+    }
   };
 
   return (

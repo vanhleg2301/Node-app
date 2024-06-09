@@ -27,9 +27,9 @@ const pages = [
   "Note",
   "meeting",
   "edit",
-  "cá ngựa",
-  "NetWatch",
-  "Cooking",
+  //  "Ludo",
+  //  "NetWatch",
+  //  "Cooking",
 ];
 const settings = ["Profile", "Dashboard", "Logout"];
 
@@ -67,8 +67,8 @@ export default function Header() {
     if (page === "edit") {
       navigate("/edit");
     }
-    if (page === "cá ngựa") {
-      navigate("/cá ngựa");
+    if (page === "ludo") {
+      navigate("/ludo");
     }
     if (page === "meeting") {
       navigate("/meeting");
@@ -77,7 +77,14 @@ export default function Header() {
 
   const handleClick = (setting) => {
     if (setting === "Logout") {
-      auth.signOut();
+      const isConfirmed = window.confirm(
+        "Are you sure you want to delete this folder?"
+      );
+      if (!isConfirmed) {
+        handleCloseUserMenu();
+      } else {
+        auth.signOut();
+      }
     } else if (setting === "Profile") {
       navigate("/profile");
     } else if (setting === "Dashboard") {
@@ -147,7 +154,7 @@ export default function Header() {
                   width: 40,
                   height: 40,
                 }}
-                image="./img/meoden-removebg-preview.png"
+                image="/img/meoden-removebg-preview.png"
               />
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
